@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.viniciusjr.desafiouol.model.Cliente;
 import br.com.viniciusjr.desafiouol.service.ClienteService;
+import br.com.viniciusjr.desafiouol.service.LocalizacaoService;
 
 @RestController
 @RequestMapping("/cliente")
@@ -21,9 +22,15 @@ public class ClienteController {
 
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private LocalizacaoService local;
+	
+	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> getAll() {
+		System.out.println("IP CLIENT: "+local.obterLocalizacao().getData().getCity_name());
 		List<Cliente> cli = (List<Cliente>) clienteService.buscarTodos();
 		return new ResponseEntity<List<Cliente>>(cli, HttpStatus.OK);
 	}
