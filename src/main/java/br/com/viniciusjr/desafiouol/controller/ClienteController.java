@@ -52,6 +52,7 @@ public class ClienteController {
 	public String getIp(HttpServletRequest request) {
 
 		return util.getClientIpAddress(request);
+
 	}
 
 }
