@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.viniciusjr.desafiouol.model.Cliente;
+import br.com.viniciusjr.desafiouol.model.Geolocalizacao;
+import br.com.viniciusjr.desafiouol.model.LocalizacaoClima;
 import br.com.viniciusjr.desafiouol.service.ClienteService;
 import br.com.viniciusjr.desafiouol.service.LocalizacaoService;
 
@@ -30,7 +32,9 @@ public class ClienteController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> getAll() {
-		System.out.println("IP CLIENT: "+local.obterLocalizacao().getData().getCity_name());
+		
+		System.out.println("Temp "+String.valueOf(local.obterLocalClima().getMax_temp()));
+		
 		List<Cliente> cli = (List<Cliente>) clienteService.buscarTodos();
 		return new ResponseEntity<List<Cliente>>(cli, HttpStatus.OK);
 	}
