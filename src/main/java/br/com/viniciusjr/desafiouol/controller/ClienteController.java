@@ -47,7 +47,6 @@ public class ClienteController {
 		if(clima != null && clima.getId() != null) {
 			cliente.setClima(clima);
 		}else {
-			//climaService.cadastrar(apiClima);
 			cliente.setClima(apiClima);	
 		}
 		
