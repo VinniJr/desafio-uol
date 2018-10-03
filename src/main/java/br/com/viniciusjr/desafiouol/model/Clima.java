@@ -1,17 +1,13 @@
 package br.com.viniciusjr.desafiouol.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,24 +19,28 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor 
-@Entity
+@Entity(name="Clima")
 @Data
-@Table(name="Cliente")
-public class Cliente implements Serializable {
+@Table(name="clima")
+public class Clima implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private Integer idade;
-
-	@JsonIgnore
-	@ManyToOne(cascade= {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "clima_id", referencedColumnName="id")
-	private Clima clima;
+	
+	
+	private Long woeid;
+	private LocalDate data;
+	private Double tempMin;
+	private Double tempMax;
+	
+	
+	
 
 }

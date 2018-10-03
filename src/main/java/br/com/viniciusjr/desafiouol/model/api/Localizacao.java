@@ -1,4 +1,4 @@
-package br.com.viniciusjr.desafiouol.model;
+package br.com.viniciusjr.desafiouol.model.api;
 
 public class Localizacao {
 	private String status;

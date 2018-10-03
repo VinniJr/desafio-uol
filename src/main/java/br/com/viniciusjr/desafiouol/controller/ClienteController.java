@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.viniciusjr.desafiouol.model.Cliente;
-import br.com.viniciusjr.desafiouol.model.Geolocalizacao;
-import br.com.viniciusjr.desafiouol.model.LocalizacaoClima;
+import br.com.viniciusjr.desafiouol.model.Clima;
 import br.com.viniciusjr.desafiouol.service.ClienteService;
+import br.com.viniciusjr.desafiouol.service.ClimaService;
 import br.com.viniciusjr.desafiouol.service.LocalizacaoService;
 
 @RestController
@@ -28,20 +28,30 @@ public class ClienteController {
 	@Autowired
 	private LocalizacaoService local;
 	
+	@Autowired
+	private ClimaService climaService;
 	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> getAll() {
-		
-		System.out.println("Temp "+String.valueOf(local.obterLocalClima().getMax_temp()));
-		
 		List<Cliente> cli = (List<Cliente>) clienteService.buscarTodos();
 		return new ResponseEntity<List<Cliente>>(cli, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
-		Cliente clienteCadastrado = clienteService.cadastrar(cliente);
+		Cliente clienteCadastrado = null;
+		Clima apiClima = local.obterLocalClima();
+		Clima clima = climaService.buscarPorWeidData(apiClima.getWoeid(), apiClima.getData());
+		
+		if(clima != null && clima.getId() != null) {
+			cliente.setClima(clima);
+		}else {
+			//climaService.cadastrar(apiClima);
+			cliente.setClima(apiClima);	
+		}
+		
+		clienteCadastrado = clienteService.cadastrar(cliente);
 		return new ResponseEntity<Cliente>(clienteCadastrado, HttpStatus.CREATED);
 	}
 
