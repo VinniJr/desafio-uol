@@ -1,5 +1,5 @@
 # desafio-uol
-Software de gestão para indústria da construção
+API rest para cadastro de clientes, bem como cadastro de temperatura do local da requisição consumindo outras apis.
 
 
 ### Tecnologias Utilizadas
@@ -16,7 +16,7 @@ Software de gestão para indústria da construção
 
 1. `cd {desafio-uol}`
 2. `mvn spring-boot:run`
-3. Acessar `http://localhost:8080`
+3. Acessar `http://localhost:8085`
 
 ### Gerar o pacate para publicação
 
@@ -27,4 +27,4 @@ Software de gestão para indústria da construção
 
 ### Acessar a aplicação
 
-A aplicação será disponibilizada na porta padrão 8080 [http://{host}:8080/](http://localhost:8080/)
+A aplicação será disponibilizada na porta padrão 8085 [http://{host}:8085/](http://localhost:8085/)

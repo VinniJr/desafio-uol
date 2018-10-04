@@ -1,6 +1,7 @@
 package br.com.viniciusjr.desafiouol.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,9 @@ public class ClimaService {
 	public Clima buscarPorCliente(Long id) {
 		return climaRepo.buscarPorCliente(id);
 	}
+	
+	
+	 public List<Clima> buscarTodos(){
+	        return (List<Clima>) climaRepo.findAll();
+	    }
 }

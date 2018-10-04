@@ -53,6 +53,15 @@ public class ClienteController {
 		clienteCadastrado = clienteService.cadastrar(cliente);
 		return new ResponseEntity<Cliente>(clienteCadastrado, HttpStatus.CREATED);
 	}
+	
+
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/alterar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> alterarCliente(@RequestBody Cliente cliente) {
+		
+		Cliente clienteAlterado  = clienteService.alterar(cliente);
+		return new ResponseEntity<Cliente>(clienteAlterado, HttpStatus.OK);
+	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/excluir/{id}")
 	public ResponseEntity<Cliente> excluirCliente(@PathVariable Long id) {

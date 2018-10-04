@@ -23,10 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name="clima")
 public class Clima implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 

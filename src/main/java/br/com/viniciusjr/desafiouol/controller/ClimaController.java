@@ -1,5 +1,7 @@
 package br.com.viniciusjr.desafiouol.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,13 @@ public class ClimaController {
 	public ResponseEntity<Clima> buscarPorCliente(@PathVariable Long id) {
 		Clima clima = climaService.buscarPorCliente(id);
 		return new ResponseEntity<Clima>(clima, HttpStatus.OK);
+	}
+
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Clima>> getAll() {
+		List<Clima> cli = (List<Clima>) climaService.buscarTodos();
+		return new ResponseEntity<List<Clima>>(cli, HttpStatus.OK);
 	}
 
 }
