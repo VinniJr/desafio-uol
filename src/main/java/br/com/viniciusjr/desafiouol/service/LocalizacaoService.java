@@ -69,8 +69,6 @@ public class LocalizacaoService {
 	private void obtemClimaPorLocalidadeData(Geolocalizacao[] lista) {
 		LocalizacaoClima[] listaClima;
 		for (Geolocalizacao geolocalizacao : lista) {
-			System.out.println("Woeid: " + geolocalizacao.getWoeid());
-
 			try {
 				restTemplate = new RestTemplate();
 
