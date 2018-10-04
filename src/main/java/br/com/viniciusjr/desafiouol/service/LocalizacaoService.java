@@ -47,11 +47,13 @@ public class LocalizacaoService {
 		}
 	}
 
+	/**
+	 * Retorna objeto com a temperatura e do dia e local
+	 * */
 	public Clima obterLocalClima() {
 		
 		Localizacao local = obterLocalizacao();
 		restTemplate = new RestTemplate();
-		LocalizacaoClima[] listaClima = null;
 		ResponseEntity<Geolocalizacao[]> responseEntity =null;
 		String LAT = local.getData().getLatitude();
 		String LONG = local.getData().getLongitude();
@@ -59,6 +61,13 @@ public class LocalizacaoService {
 		responseEntity = restTemplate.getForEntity(API_LOCATION+SC+ LAT + "," + LONG, Geolocalizacao[].class);
 		
 		Geolocalizacao[] lista = responseEntity.getBody();
+		obtemClimaPorLocalidadeData(lista);
+
+		return clima;
+	}
+
+	private void obtemClimaPorLocalidadeData(Geolocalizacao[] lista) {
+		LocalizacaoClima[] listaClima;
 		for (Geolocalizacao geolocalizacao : lista) {
 			System.out.println("Woeid: " + geolocalizacao.getWoeid());
 
@@ -73,8 +82,6 @@ public class LocalizacaoService {
 			} catch (Exception e) {
 			}
 		}
-
-		return clima;
 	}
 
 	private void montarClima(LocalizacaoClima[] listaClima, Geolocalizacao geolocalizacao) {
