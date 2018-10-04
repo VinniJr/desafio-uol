@@ -59,5 +59,11 @@ public class ClienteController {
 		clienteService.excluir(id);
 		return new ResponseEntity<Cliente>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/buscar-cliente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> buscarCliente(@PathVariable Long id) {
+		Cliente cliente = clienteService.buscarPorId(id);
+		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
+	}
 
 }

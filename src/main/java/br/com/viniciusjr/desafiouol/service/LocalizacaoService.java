@@ -28,15 +28,11 @@ public class LocalizacaoService {
 	@Autowired
 	private HttpServletRequest request;
 	
-	
-	Clima clima = new Clima();
 
 	RestTemplate restTemplate;
 
 	/**
 	 * API aberta de geolocalização por IP https://www.ipvigilante.com/
-	 * 
-	 * @return JSON
 	 */
 	public Localizacao obterLocalizacao() {
 		restTemplate = new RestTemplate();
@@ -51,7 +47,7 @@ public class LocalizacaoService {
 	 * Retorna objeto com a temperatura e do dia e local
 	 * */
 	public Clima obterLocalClima() {
-		
+		Clima clima = new Clima();
 		Localizacao local = obterLocalizacao();
 		restTemplate = new RestTemplate();
 		ResponseEntity<Geolocalizacao[]> responseEntity =null;
@@ -61,12 +57,13 @@ public class LocalizacaoService {
 		responseEntity = restTemplate.getForEntity(API_LOCATION+SC+ LAT + "," + LONG, Geolocalizacao[].class);
 		
 		Geolocalizacao[] lista = responseEntity.getBody();
-		obtemClimaPorLocalidadeData(lista);
+		obtemClimaPorLocalidadeData(lista, clima);
+		
 
 		return clima;
 	}
 
-	private void obtemClimaPorLocalidadeData(Geolocalizacao[] lista) {
+	private void obtemClimaPorLocalidadeData(Geolocalizacao[] lista, Clima clima) {
 		LocalizacaoClima[] listaClima;
 		for (Geolocalizacao geolocalizacao : lista) {
 			try {
@@ -75,14 +72,14 @@ public class LocalizacaoService {
 				ResponseEntity<LocalizacaoClima[]> respEntity = 
 						restTemplate.getForEntity(API_LOCATION+geolocalizacao.getWoeid()+obterParamData(),LocalizacaoClima[].class);
 				listaClima = respEntity.getBody();
-				montarClima(listaClima, geolocalizacao);
+				montarClima(listaClima, geolocalizacao, clima);
 				break;
 			} catch (Exception e) {
 			}
 		}
 	}
 
-	private void montarClima(LocalizacaoClima[] listaClima, Geolocalizacao geolocalizacao) {
+	private void montarClima(LocalizacaoClima[] listaClima, Geolocalizacao geolocalizacao, Clima clima) {
 		clima.setData(LocalDate.now());
 		clima.setWoeid(geolocalizacao.getWoeid());
 		clima.setTempMin(listaClima[0].getMin_temp());

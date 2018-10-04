@@ -1,5 +1,14 @@
 package br.com.viniciusjr.desafiouol.model.api;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Localizacao {
 	private String status;
 	 Data DataObject;
@@ -12,11 +21,5 @@ public class Localizacao {
 	  return DataObject;
 	 }
 
-	 public void setStatus(String status) {
-	  this.status = status;
-	 }
 
-	 public void setData(Data dataObject) {
-	  this.DataObject = dataObject;
-	 }
 }

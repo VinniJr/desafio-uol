@@ -20,7 +20,7 @@ public class ClimaController {
 	private ClimaService climaService;
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/obterClimaCliente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/obter-clima-cliente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Clima> buscarPorCliente(@PathVariable Long id) {
 		Clima clima = climaService.buscarPorCliente(id);
 		return new ResponseEntity<Clima>(clima, HttpStatus.OK);
