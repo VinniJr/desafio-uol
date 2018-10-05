@@ -1,6 +1,6 @@
 package br.com.viniciusjr.desafiouol.model.api;
 
-public class Geolocalizacao {
+public class Geolocalizacao  implements Comparable<Geolocalizacao> {
 	 private Double distance;
 	 private String title;
 	 private String location_type;
@@ -56,5 +56,10 @@ public class Geolocalizacao {
 	public void setLatt_long(String latt_long) {
 	  this.latt_long = latt_long;
 	 }
+
+	@Override
+	public int compareTo(Geolocalizacao geo) {
+		return this.distance.compareTo(geo.distance);
+	}
 
 }

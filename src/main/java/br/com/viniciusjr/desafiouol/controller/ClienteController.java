@@ -54,8 +54,6 @@ public class ClienteController {
 		return new ResponseEntity<Cliente>(clienteCadastrado, HttpStatus.CREATED);
 	}
 	
-
-	
 	@RequestMapping(method = RequestMethod.PUT, value = "/alterar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> alterarCliente(@RequestBody Cliente cliente) {
 		

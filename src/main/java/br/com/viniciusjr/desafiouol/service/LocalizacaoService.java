@@ -27,7 +27,6 @@ public class LocalizacaoService {
 
 	@Autowired
 	private HttpServletRequest request;
-	
 
 	RestTemplate restTemplate;
 
@@ -45,32 +44,33 @@ public class LocalizacaoService {
 
 	/**
 	 * Retorna objeto com a temperatura e do dia e local
-	 * */
+	 */
 	public Clima obterLocalClima() {
 		Clima clima = new Clima();
 		Localizacao local = obterLocalizacao();
 		restTemplate = new RestTemplate();
-		ResponseEntity<Geolocalizacao[]> responseEntity =null;
+		ResponseEntity<Geolocalizacao[]> responseEntity = null;
 		String LAT = local.getData().getLatitude();
 		String LONG = local.getData().getLongitude();
-		
-		responseEntity = restTemplate.getForEntity(API_LOCATION+SC+ LAT + "," + LONG, Geolocalizacao[].class);
-		
-		Geolocalizacao[] lista = responseEntity.getBody();
-		obtemClimaPorLocalidadeData(lista, clima);
-		
 
+		responseEntity = restTemplate.getForEntity(API_LOCATION + SC + LAT + "," + LONG, Geolocalizacao[].class);
+
+		Geolocalizacao[] lista = responseEntity.getBody();
+		
+		obtemClimaPorLocalidadeData(ordenarMenorDistancia(lista), clima);
+		
 		return clima;
 	}
 
+	/**Metodo principal que retornar o clima pelo dia e localidade mais proxima*/
 	private void obtemClimaPorLocalidadeData(Geolocalizacao[] lista, Clima clima) {
 		LocalizacaoClima[] listaClima;
 		for (Geolocalizacao geolocalizacao : lista) {
 			try {
 				restTemplate = new RestTemplate();
 
-				ResponseEntity<LocalizacaoClima[]> respEntity = 
-						restTemplate.getForEntity(API_LOCATION+geolocalizacao.getWoeid()+obterParamData(),LocalizacaoClima[].class);
+				ResponseEntity<LocalizacaoClima[]> respEntity = restTemplate.getForEntity(
+						API_LOCATION + geolocalizacao.getWoeid() + obterParamData(), LocalizacaoClima[].class);
 				listaClima = respEntity.getBody();
 				montarClima(listaClima, geolocalizacao, clima);
 				break;
@@ -78,7 +78,27 @@ public class LocalizacaoService {
 			}
 		}
 	}
+	
+	/**
+	 * Garante que a pesquisa do clima será feita pela menor distancia, apesar da api retornar pela menor distancia
+	 * */
+	private Geolocalizacao[] ordenarMenorDistancia(Geolocalizacao[] lista) {
+		Geolocalizacao[] listaAux = new Geolocalizacao[lista.length];
 
+		for (int linha = 0; linha < lista.length; linha++) {
+			for (int col = 0; col < lista.length; col++) {
+
+				if (lista[linha].getDistance() < lista[col].getDistance()) {
+					listaAux[linha] = lista[linha];
+				} else {
+					listaAux[linha] = lista[col];
+				}
+			}
+		}
+		return listaAux;
+	}
+
+	/**Monta objeto clima a ser persistido*/
 	private void montarClima(LocalizacaoClima[] listaClima, Geolocalizacao geolocalizacao, Clima clima) {
 		clima.setData(LocalDate.now());
 		clima.setWoeid(geolocalizacao.getWoeid());
@@ -88,13 +108,13 @@ public class LocalizacaoService {
 
 	/**
 	 * Obtem data do servidor para passar como parametro de consulta da API
-	 * */
+	 */
 	public String obterParamData() {
 		Date data = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(data);
 		String dia = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
-		String mes = String.valueOf(cal.get(Calendar.MONTH)+1);
+		String mes = String.valueOf(cal.get(Calendar.MONTH) + 1);
 		String ano = String.valueOf(cal.get(Calendar.YEAR));
 
 		return "/" + ano + "/" + mes + "/" + dia;
@@ -110,5 +130,4 @@ public class LocalizacaoService {
 		}
 		return ipAddress;
 	}
-
 }
